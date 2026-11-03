@@ -1,0 +1,239 @@
+/* variables */
+:root {
+	--primary-color: #931420;
+	--accent-color: #f6bb73;
+	--light-accent: #fffded;
+	--light: white;
+	--dark: black;
+}
+
+/* reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* the default styles for the elements */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+    font-size: 100%;
+    width: 80%;
+    margin: auto;
+    border: 3px solid var(--primary-color);
+}
+header, section, aside, footer { padding: 1em; }
+h1, h2, h3, p, article, blockquote { padding-bottom: .5em; }
+ul { margin-left: 1em; }
+h1 { font-size: 150%; }
+h2 { font-size: 120%; }
+h3 { font-size: 110%; }
+a:focus, a:hover { font-style: italic; }
+
+/* the styles for the header */
+header {
+	border-bottom: 3px solid var(--primary-color);
+	background-image: linear-gradient(30deg, 
+		var(--accent-color) 0%, 
+		var(--light-accent) 25%, 
+		var(--light) 50%, 
+		var(--light-accent) 75%, 
+		var(--accent-color) 100%);
+	text-align: center;
+	& h2 {
+		font-size: 175%;
+		color: var(--primary-color);
+		padding-bottom: 0;
+	}
+	& h3 {
+		font-size: 130%;
+		font-style: italic;
+	}
+	& img {
+		float: left;
+		margin: 0 30px;
+		width: clamp(40px, 15%, 66px);
+	}
+}
+
+/* the styles for the main element */
+main {
+	clear: left;
+	display: flex;
+	flex-direction: column;
+}
+
+/* the styles for the section */
+section {
+	& h1 {
+		color: var(--primary-color);
+	}
+}
+
+/* the styles for the article */
+article {
+	padding-top: .5em;
+	margin-bottom: .5em;
+	& img {
+		float: left;
+		margin: .25em 1em 1em 0;
+		border: 1px solid var(--dark);
+		width: min(100%, 225px);
+	}
+}
+
+/* the styles for the aside */
+aside {
+	& h2 {
+		color: var(--primary-color);
+	}
+	& img {
+		margin-bottom: .9em;
+	}
+	& blockquote {
+		font-style: italic;
+		margin-left: .5em;
+	}
+}
+
+/* the styles for the footer */
+footer {
+	background-color: var(--primary-color);
+	& p {
+		text-align: center;
+		color: white;
+		padding-bottom: 0; 
+	}
+}
+
+/* the styles for the navigation menu (Mobile-First) */
+.navbar {
+	background-color: var(--primary-color);
+	position: relative;
+
+	/* Hide checkbox */
+	& input[type="checkbox"] {
+		display: none;
+	}
+
+	/* Menu button styling (hamburger) */
+	& .menu-btn {
+		display: block;
+		padding: .75em 1em;
+		color: var(--light);
+		font-size: 120%;
+		cursor: pointer;
+		text-align: right;
+	}
+
+	& ul {
+		list-style-type: none;
+		margin: 0;
+	}
+
+	& a {
+		display: block;
+		padding: .75em;
+		text-decoration: none;
+		color: var(--light);
+	}
+
+	& a.current {
+		color: var(--accent-color);
+		font-weight: bold;
+	}
+
+	& a.current:hover { 
+		font-style: normal;
+	}
+}
+
+/* Hide menu by default on mobile */
+.menu {
+	display: none;
+	flex-direction: column;
+}
+
+/* When checkbox is checked, show drop-down menu and change hamburger to close symbol */
+.navbar input[type="checkbox"]:checked ~ .menu {
+	display: flex;
+}
+
+.navbar input[type="checkbox"]:checked ~ .menu-btn::before {
+	content: "\2715"; /* Close symbol (✕) */
+}
+
+.navbar input[type="checkbox"]:not(:checked) ~ .menu-btn::before {
+	content: "\2630"; /* Hamburger symbol (☰) */
+}
+
+/* Submenu positioning and behaviors for mobile (right arrow, slide-out to the right) */
+.menu li:has(.submenu) {
+	position: relative;
+	& small {
+		margin-left: .25em;
+	}
+	&:hover > .submenu {
+		display: block;
+	}
+}
+
+.submenu {
+	position: absolute;
+	top: 0;
+	left: 100%;
+	background-color: var(--primary-color);
+	color: var(--light);
+	width: 200px;
+	display: none;
+	z-index: 1000; /* Ensure drop-down menus display on top of main content */
+}
+
+/* Media query for wrapping threshold / horizontal layout on large screens (~ min-width: 650px) */
+@media only screen and (min-width: 650px) {
+	header {
+		text-align: left;
+	}
+	main {
+		flex-direction: row;
+	}
+	section {
+		order: 2;
+		flex-basis: 75%;
+	}
+	aside {
+		order: 1;
+		flex-basis: 25%;
+	}
+
+	/* Hide hamburger menu button on large screens */
+	.navbar .menu-btn {
+		display: none;
+	}
+
+	/* Display navigation menu horizontally, even if checkbox is checked */
+	.menu {
+		display: flex !important;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+	}
+
+	/* Change submenu indicator arrow to down triangle for horizontal menu */
+	.menu li:has(.submenu) small.arrow::before {
+		content: "\25BC"; /* Down triangle */
+	}
+	.menu li:has(.submenu) small.arrow {
+		font-size: 0; /* Hide old arrow text and display pseudo down arrow */
+	}
+	.menu li:has(.submenu) small.arrow::before {
+		font-size: initial;
+	}
+
+	/* Submenu drops down below the menu item on hover for large screens */
+	.submenu {
+		top: 100%;
+		left: 0;
+		width: 175%;
+	}
+}
